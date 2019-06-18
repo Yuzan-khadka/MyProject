@@ -16,8 +16,8 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 const myIcon1 = <Icon name="person" size={30} color="#2289ff" />;
 const myIcon2 = <Icon name="lock" size={30} color="#2289ff" />;
 
-export default class Form extends Component {
-  constructor(props) {
+export default class EForm extends Component {
+  /* constructor(props) {
     super(props);
 
     this.state = {
@@ -50,7 +50,7 @@ export default class Form extends Component {
     } catch (error) {
       console.log(error.toString());
     }
-  };
+  };*/
 
   render() {
     return (
@@ -63,8 +63,8 @@ export default class Form extends Component {
             placeholderTextColor="#777777"
             keyboardType="email-address"
             onSubmitEditing={() => this.password.focus()}
-            onChangeText={email => this.setState({ email })}
-            value={this.state.email}
+            //onChangeText={email => this.setState({ email })}
+           // value={this.state.email}
           />
         </View>
         <View style={styles.icon}>
@@ -75,18 +75,16 @@ export default class Form extends Component {
             placeholderTextColor="#777777"
             secureTextEntry={true}
             ref={input => (this.password = input)}
-            onChangeText={password => this.setState({ password })}
-            value={this.state.password}
+            //onChangeText={password => this.setState({ password })}
+            //value={this.state.password}
           />
         </View>
         <View style={[{ width: 280, margin: 10 }]}>
+          {/*<Button  title='Log In' onPress={()=>this.loginUser(this.state.email,this.state.password)}/>*/}
           <Button
             title="Log In"
-            onPress={() =>
-              this.loginUser(this.state.email, this.state.password)
-            }
+            onPress={() => this.props.onLoginPress.navigate("EMainApp")}
           />
-          {/* <Button  title='Log In' onPress={() => this.props.navigation.navigate('DashBoard')}/> */}
         </View>
         <TouchableOpacity>
           <Text

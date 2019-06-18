@@ -1,33 +1,20 @@
 import React, { Component } from "react";
 import { Text, View, StyleSheet, Alert, BackHandler } from "react-native";
-import { SearchBar } from "react-native-elements";
-//import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 
 import {
   createStackNavigator,
   createAppContainer,
-  createSwitchNavigator,
-  createDrawerNavigator,
   createMaterialTopTabNavigator
 } from "react-navigation";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
-import ELogin from "../employer/ELogin";
-import ERegister from "../employer/ERegister";
-import EMainApp from "../employer/EMainApp";
-import Dashboard from "../pages/Dashboard";
+import EDashboard from "./EDashboard";
 import Profile from "../pages/Profile";
 import Notifications from "../pages/Notifications";
 import Categories from "../pages/Categories";
-import DrawerContent from "../components/DrawerContent";
-import OptionMenu from "../components/OptionMenu";
-import StartupScreen from "../employer/StartupScreen";
 
 import Menu, { MenuItem, MenuDivider } from "react-native-material-menu";
-import OptionsMenu from "react-native-options-menu";
 
-export default class Navigation extends Component {
+export default class EMainApp extends Component {
   render() {
     return <AppContainer onButtonPress={this.props.navigation} />;
   }
@@ -35,7 +22,7 @@ export default class Navigation extends Component {
 const DashBoardTabNavigator = createMaterialTopTabNavigator(
   {
     Home: {
-      screen: Dashboard,
+      screen: props => <EDashboard {...props} />,
       title: "Home",
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
@@ -59,14 +46,6 @@ const DashBoardTabNavigator = createMaterialTopTabNavigator(
           <Icon name="notifications" size={25} color={tintColor} />
         )
       }
-    },
-    Categories: {
-      screen: Categories,
-      navigationOptions: {
-        tabBarIcon: ({ tintColor }) => (
-          <Icon name="apps" size={25} color={tintColor} />
-        )
-      }
     }
   },
   {
@@ -74,9 +53,9 @@ const DashBoardTabNavigator = createMaterialTopTabNavigator(
 
     //For MaterialBottomTabNavigator
     /*order: ['Home', 'Profile','Notifications'],
-      activeColor: 'green',
-      inactiveColor: '#888888',
-      barStyle: { backgroundColor: '#ffffff' },*/
+        activeColor: 'green',
+        inactiveColor: '#888888',
+        barStyle: { backgroundColor: '#ffffff' },*/
     tabBarPosition: "bottom",
     tabBarOptions: {
       activeTintColor: "green",
@@ -107,7 +86,7 @@ DashBoardTabNavigator.navigationOptions = ({ navigation }) => {
   };
 };
 
-const DashboardStack = createStackNavigator(
+const EDashboardStack = createStackNavigator(
   {
     DashboardTabNavigator: {
       screen: DashBoardTabNavigator
@@ -129,10 +108,7 @@ const DashboardStack = createStackNavigator(
       showMenu = () => {
         this._menu.show();
       };
-      employer = () => {
-        this._menu.hide();
-        props.navigation.navigate("EmployerZone");
-      };
+
       onExit = () => {
         this._menu.hide();
         Alert.alert("Exit", "Are you sure?", [
@@ -156,10 +132,10 @@ const DashboardStack = createStackNavigator(
                 />
               }
             >
-              <MenuItem onPress={this.employer}>Employer Zone</MenuItem>
               <MenuItem onPress={this.hideMenu}>Setting</MenuItem>
               <MenuDivider />
               <MenuItem onPress={this.hideMenu}>About_Us</MenuItem>
+              <MenuItem onPress={this.hideMenu}>Logout</MenuItem>
               <MenuItem onPress={this.onExit}>Exit</MenuItem>
             </Menu>
           </View>
@@ -171,104 +147,4 @@ const DashboardStack = createStackNavigator(
     }
   }
 );
-
-const AppSwitchNavigator = createSwitchNavigator(
-  {
-    MainApp: DashboardStack,
-     LogIn: Login,
-    SignUp: Register,
-    
-    EmployerZone: {
-      screen: createStackNavigator(
-        {
-          StartupScreen: StartupScreen,
-          ELogIn: ELogin,
-          ESignup: ERegister,
-          EMainApp: EMainApp
-        },
-        {
-          headerMode: "none",
-          navigationOptions: {
-            headerVisible: false
-          }
-        }
-      )
-    }
-  },
-  {
-    headerMode: "none",
-    navigationOptions: {
-      headerVisible: false
-    }
-  }
-);
-
-const AppStackNavigator = createStackNavigator(
-  {
-    LogIn: Login,
-    SignUp: {
-      screen: Register
-    },
-    MainApp: DashboardStack,
-    EmployerZone: {
-      screen: createStackNavigator(
-        {
-          StartupScreen: StartupScreen,
-          ELogIn: ELogin,
-          ESignup: ERegister,
-          EMainApp: EMainApp
-        },
-        {
-          headerMode: "none",
-          navigationOptions: {
-            headerVisible: false
-          }
-        }
-      )
-    }
-  },
-  {
-    headerMode: "none",
-    navigationOptions: {
-      headerVisible: false
-    }
-  }
-);
-
-const AppDrawerNavigator = createDrawerNavigator(
-  {
-    /*Home: {
-            screen: DashboardStack,
-          },
-          
-          Settings:{
-              screen: Profile,
-          },
-
-          Logout:{
-            screen: Profile,
-          },
-
-          About_Us:{
-            screen: Profile,
-          },*/
-    Login: { screen: AppSwitchNavigator },
-
-    Login1: { screen: AppStackNavigator }
-  },
-
-  {
-    contentComponent: props => <DrawerContent {...props} />
-  }
-);
-
-const AppContainer = createAppContainer(AppSwitchNavigator);
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#ffffff",
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
-  }
-});
+const AppContainer = createAppContainer(EDashboardStack);

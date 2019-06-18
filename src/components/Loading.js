@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native'
+import { View, Text, ActivityIndicator, StyleSheet, StatusBar } from 'react-native'
 
 import Navigation from '../route/Navigation';
 export default class Loading extends React.Component {
@@ -12,13 +12,14 @@ export default class Loading extends React.Component {
 
 
         componentDidMount = () =>{ 
-            setTimeout(() =>this.setState({animating: false}), 5000)}
+            setTimeout(() =>this.setState({animating: false}), 1000)}
     
   render() {
 
     if (this.state.animating){
       return(
         <View style={styles.container}>
+          <StatusBar backgroundColor='#296802'/>
           <Text style={{fontSize:18, fontWeight:'bold', color:'green'}}>Loading</Text>
           <ActivityIndicator size="large" animating={this.state.animating}/>
           </View>)

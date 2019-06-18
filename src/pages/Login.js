@@ -21,6 +21,7 @@ import Form from '../components/Form';
         render(){
           return(
               <View style={styles.container}>
+                <StatusBar backgroundColor="#4286f4" />
                 <Logo/>
                 <Form onLoginPress={this.props.navigation}/>
                 <View style={styles.signup}>

@@ -2,25 +2,22 @@ import React, { Component } from "react";
 import { Text, View, StyleSheet, StatusBar, Image, Button } from "react-native";
 
 import Logo from "../components/Logo";
-import RegisterForm from "../components/RegisterForm";
+import EForm from "./EForm";
 
-export default class Register extends Component {
+export default class ELogin extends Component {
   static navigationOptions = {
-    title: "Register",
-    headerTitleStyle: { color: "#777777" }
+    header: null
   };
-
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar backgroundColor="#4286f4" />
         <Logo />
-        <RegisterForm onLoginPress={this.props.navigation} />
+        <EForm onLoginPress={this.props.navigation} />
         <View style={styles.signup}>
-          <Text>Already have an account?</Text>
+          <Text>New to GetHired?</Text>
           <Button
-            title="Sign In"
-            onPress={() => this.props.navigation.navigate("LogIn")}
+            title="Get Started"
+            onPress={() => this.props.navigation.navigate("ESignup")}
           />
         </View>
       </View>
