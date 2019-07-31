@@ -25,11 +25,11 @@ import DrawerContent from "../components/DrawerContent";
 import OptionMenu from "../components/OptionMenu";
 import StartupScreen from "../employer/StartupScreen";
 import StartPage from "../pages/StartPage";
+import Khalti from "../pages/Khalti";
 
 import Menu, { MenuItem, MenuDivider } from "react-native-material-menu";
 
 export default class Navigation extends Component {
-  
   render() {
     return <AppContainer onButtonPress={this.props.navigation} />;
   }
