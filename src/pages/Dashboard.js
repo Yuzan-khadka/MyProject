@@ -53,7 +53,9 @@ class Post extends Component {
               width: null,
               height: null,
               borderRadius: 30,
-              resizeMode: "cover"
+              resizeMode: "cover",
+              borderColor: 'green',
+              borderWidth: 1 
             }}
           />
         </View>
@@ -121,9 +123,9 @@ export default class Dashboard extends Component {
 
   _renderItem = ({ item }) => (
     <View style={{ padding: 20, marginTop: 20, backgroundColor: "#ffffff" }}>
-      <Post imageUri={require("../images/sanjay.jpg")} name="Yuzan Khadka" />
+      <Post imageUri={require("../images/Ncell.png")} name="Ncell" />
       <View style={{ padding: 5, marginTop: 5 }}>
-        <View style={{ flexDirection: "row" ,margin: 5, padding: 5}}>
+        <View style={{ flexDirection: "row", margin: 5, padding: 5 }}>
           <Text style={{ fontWeight: "500" }}>JobTitle:</Text>
           <Text>{item.JobTitle}</Text>
         </View>
@@ -138,11 +140,7 @@ export default class Dashboard extends Component {
       </View>
       <View style={{ flex: 1 }}>
         <Post1
-          imageUri={{
-            uri:
-              "https://source.unsplash.com/random/500" +
-              Math.floor(Math.random() * 800 + 500)
-          }}
+          imageUri={{uri:item.image}}
         />
         {/* <Post1 imageUri={require("../images/vacancy.jpg")} /> */}
       </View>
@@ -155,8 +153,6 @@ export default class Dashboard extends Component {
   dataLoading = () => {
     this.setState({ refreshing: true });
     let firebasekofinaldata = [];
-    console.log("suraj");
-
     fetch("https://gethired-b559f.firebaseio.com/Post.json")
       .catch(err => {
         Alert.alert("Something went wrong");
@@ -209,7 +205,7 @@ export default class Dashboard extends Component {
                   backgroundColor: "#ffffff"
                 }}
               >
-                Top Employers
+                Advertisements
               </Text>
 
               <View style={{ height: 130, marginTop: 10 }}>

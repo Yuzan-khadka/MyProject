@@ -20,8 +20,7 @@ export default class RegisterForm extends Component {
       LName: "",
       email: "",
       password: "",
-      rePassword: "",
-     
+      rePassword: ""
     };
   }
 
@@ -32,13 +31,14 @@ export default class RegisterForm extends Component {
         return;
       }
       firebase.auth().createUserWithEmailAndPassword(email, password);
-      
+
       this.saveExtra();
       // alert('User registered successfully');
     } catch (error) {
       console.log(error.toString());
     }
   };
+
   saveExtra = () => {
     firebase
       .database()
@@ -46,15 +46,21 @@ export default class RegisterForm extends Component {
       .push({
         FName: this.state.FName,
         LName: this.state.LName,
-        email: this.state.email,
-        
+        email: this.state.email
       })
       .then(data => {
         //success callback
-        Alert.alert("Customer Data saved Successfully!");
-        this.props.onLoginPress.navigate("Home");
+        Alert.alert("Users Data saved Successfully!");
+        // this.props.onLoginPress.navigate("Login");
 
         console.log("data ", data);
+        this.setState({
+          FName: "",
+          LName: "",
+          email: "",
+          password: "",
+          rePassword: ""
+        });
       })
       .catch(error => {
         //error callback
@@ -70,6 +76,7 @@ export default class RegisterForm extends Component {
           placeholderTextColor="#777777"
           onSubmitEditing={() => this.LName.focus()}
           onChangeText={FName => this.setState({ FName })}
+          value={this.state.FName}
         />
         <TextInput
           style={styles.passBox}
@@ -78,6 +85,7 @@ export default class RegisterForm extends Component {
           ref={input => (this.LName = input)}
           onSubmitEditing={() => this.email.focus()}
           onChangeText={LName => this.setState({ LName })}
+          value={this.state.LName}
         />
         <TextInput
           style={styles.passBox}
@@ -86,6 +94,7 @@ export default class RegisterForm extends Component {
           ref={input => (this.email = input)}
           onSubmitEditing={() => this.password.focus()}
           onChangeText={email => this.setState({ email })}
+          value={this.state.email}
         />
         <TextInput
           style={styles.passBox}
@@ -95,6 +104,7 @@ export default class RegisterForm extends Component {
           ref={input => (this.password = input)}
           onSubmitEditing={() => this.repassword.focus()}
           onChangeText={password => this.setState({ password })}
+          value={this.state.password}
         />
         <TextInput
           style={styles.passBox}
@@ -103,6 +113,7 @@ export default class RegisterForm extends Component {
           secureTextEntry={true}
           ref={input => (this.repassword = input)}
           onChangeText={rePassword => this.setState({ rePassword })}
+          value={this.state.rePassword}
         />
         <View style={[{ width: 230, margin: 10 }]}>
           <Button

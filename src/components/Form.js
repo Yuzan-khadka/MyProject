@@ -19,37 +19,45 @@ const myIcon2 = <Icon name="lock" size={30} color="#2289ff" />;
 export default class Form extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
+      loggedin: false,
       email: "",
       password: ""
     };
   }
 
-  loginUser = (email, password) => {
-    try {
-      if (this.state.email == "" || this.state.password == "") {
-        alert("Empty Fields!!");
-        return;
-      }
-
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then(() => {
-          this.setState({
-            email: "",
-            password: "",
-            showLoading: false,
-            error: ""
+  loginUser = async (email, password) => {
+    if (email != "" && password != "") {
+      try {
+        let user = await firebase
+          .auth()
+          .signInWithEmailAndPassword(email, password)
+          .then(() => {
+            this.setState({
+              email: "",
+              password: "",
+              showLoading: false,
+              error: ""
+            });
+            console.log(user);
+            this.props.onLoginPress.navigate("Home");
           });
-
-          this.props.onLoginPress.navigate("Home");
-          alert("Welcome Sanjay");
-        });
-    } catch (error) {
-      console.log(error.toString());
+      } catch (error) {
+        console.log(error.toString());
+      }
+    } else {
+      alert("Missing email or password");
     }
+  };
+  signUserOut = () => {
+    firebase.auth
+      .signOut()
+      .then(() => {
+        console.log("Logged out....");
+      })
+      .catch(error => {
+        console.log("error", error);
+      });
   };
 
   render() {

@@ -10,6 +10,7 @@ import {
   createDrawerNavigator,
   createMaterialTopTabNavigator
 } from "react-navigation";
+import * as firebase from "firebase";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
@@ -23,11 +24,12 @@ import Categories from "../pages/Categories";
 import DrawerContent from "../components/DrawerContent";
 import OptionMenu from "../components/OptionMenu";
 import StartupScreen from "../employer/StartupScreen";
+import StartPage from "../pages/StartPage";
 
 import Menu, { MenuItem, MenuDivider } from "react-native-material-menu";
-import OptionsMenu from "react-native-options-menu";
 
 export default class Navigation extends Component {
+  
   render() {
     return <AppContainer onButtonPress={this.props.navigation} />;
   }
@@ -129,10 +131,23 @@ const DashboardStack = createStackNavigator(
       showMenu = () => {
         this._menu.show();
       };
-      employer = () => {
-        this._menu.hide();
-        props.navigation.navigate("EmployerZone");
+      signUserOut = () => {
+        firebase
+          .auth()
+          .signOut()
+          .then(() => {
+            console.log("Logged out....");
+            this.hideMenu();
+            props.navigation.navigate("StartPage");
+          })
+          .catch(error => {
+            console.log("error", error);
+          });
       };
+      // employer = () => {
+      //   this._menu.hide();
+      //   props.navigation.navigate("EmployerZone");
+      // };
       onExit = () => {
         this._menu.hide();
         Alert.alert("Exit", "Are you sure?", [
@@ -156,10 +171,12 @@ const DashboardStack = createStackNavigator(
                 />
               }
             >
-              <MenuItem onPress={this.employer}>Employer Zone</MenuItem>
               <MenuItem onPress={this.hideMenu}>Setting</MenuItem>
               <MenuDivider />
               <MenuItem onPress={this.hideMenu}>About_Us</MenuItem>
+              <MenuDivider />
+              <MenuItem onPress={this.signUserOut}>Logout</MenuItem>
+              <MenuDivider />
               <MenuItem onPress={this.onExit}>Exit</MenuItem>
             </Menu>
           </View>
@@ -172,12 +189,13 @@ const DashboardStack = createStackNavigator(
   }
 );
 
-const AppSwitchNavigator = createSwitchNavigator(
+const AppSwitchNavigator = createStackNavigator(
   {
-    MainApp: DashboardStack,
-     LogIn: Login,
+    StartPage: StartPage,
+    LogIn: Login,
     SignUp: Register,
-    
+    MainApp: DashboardStack,
+
     EmployerZone: {
       screen: createStackNavigator(
         {

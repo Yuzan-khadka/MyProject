@@ -25,7 +25,6 @@ import firebase from "../components/firebase";
 const screen = Dimensions.get("window");
 
 export default class EDashboard extends Component {
- 
   constructor() {
     super();
     this.state = {
@@ -37,9 +36,7 @@ export default class EDashboard extends Component {
       jobTitle: "",
       jobDescription: "",
       jobType: [],
-      image: [],
-      photo: null,
-      uri: null
+      image:''
     };
   }
   handleChoosePhoto = () => {
@@ -56,10 +53,9 @@ export default class EDashboard extends Component {
         console.log("User tapped custom button: ", response.customButton);
         alert(response.customButton);
       } else {
-        const source = { uri: response.uri };
+        
         this.setState({
-          photo: source,
-          photoUri: response.uri
+          uri: response.uri
         });
       }
     });
@@ -78,11 +74,13 @@ export default class EDashboard extends Component {
         JobTitle: this.state.jobTitle,
         JobDescription: this.state.jobDescription,
         JobType: this.state.jobType,
-        
+        image: this.state.uri
       })
 
       .then(data => {
         //success callback
+        this.uploadPhoto();
+
         alert("Job Posted Successfully!");
 
         this.props.navigation.navigate("Home");
@@ -93,7 +91,8 @@ export default class EDashboard extends Component {
           jobDescription: "",
           jobType: [],
           photo: null,
-          isLoading: false
+          isLoading: false,
+          image:''
         });
       })
       .catch(error => {
@@ -102,15 +101,24 @@ export default class EDashboard extends Component {
       });
   };
 
-  saveImage = () => {
-    firebase
+  saveImage = async uri => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+
+    var ref = firebase
       .storage()
-      .ref("images/")
-      .put(this.state.photo);
+      .ref("users/")
+      .child("images/");
+    return ref.put(blob);
   };
 
+  uploadPhoto =() =>{
+    this.saveImage(this.state.uri);
+    
+}
+
   render() {
-    const { photo } = this.state;
+    const { uri } = this.state;
     return (
       <View style={{ flex: 1, backgroundColor: "#dddddd" }}>
         <Modal
@@ -243,12 +251,11 @@ export default class EDashboard extends Component {
                       this.handleChoosePhoto();
                     }}
                   >
-                    {photo && (
-                      <Image
-                        source={this.state.photo}
-                        style={{ width: 100, height: 100 }}
-                      />
-                    )}
+                    {uri && (<Image
+                      source={{ uri: this.state.uri }}
+                      style={{ width: 100, height: 100 }}
+                    />)}
+
                     <View
                       style={{
                         borderWidth: 2,

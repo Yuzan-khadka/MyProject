@@ -6,9 +6,11 @@ import {
   createAppContainer,
   createMaterialTopTabNavigator
 } from "react-navigation";
+
+import * as firebase from "firebase";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import EDashboard from "./EDashboard";
-import Profile from "../pages/Profile";
+import EProfile from "./EProfile";
 import Notifications from "../pages/Notifications";
 import Categories from "../pages/Categories";
 
@@ -32,7 +34,7 @@ const DashBoardTabNavigator = createMaterialTopTabNavigator(
     },
 
     Profile: {
-      screen: Profile,
+      screen:props => <EProfile {...props} />,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
           <Icon name="person" size={25} color={tintColor} />
@@ -109,6 +111,20 @@ const EDashboardStack = createStackNavigator(
         this._menu.show();
       };
 
+      signUserOut = () => {
+        firebase
+          .auth()
+          .signOut()
+          .then(() => {
+            console.log("Logged out....");
+            this.hideMenu();
+            props.navigation.navigate("Profile");
+          })
+          .catch(error => {
+            console.log("error", error);
+          });
+      };
+
       onExit = () => {
         this._menu.hide();
         Alert.alert("Exit", "Are you sure?", [
@@ -135,7 +151,9 @@ const EDashboardStack = createStackNavigator(
               <MenuItem onPress={this.hideMenu}>Setting</MenuItem>
               <MenuDivider />
               <MenuItem onPress={this.hideMenu}>About_Us</MenuItem>
-              <MenuItem onPress={this.hideMenu}>Logout</MenuItem>
+              <MenuDivider />
+              <MenuItem onPress={this.signUserOut}>Logout</MenuItem>
+              <MenuDivider />
               <MenuItem onPress={this.onExit}>Exit</MenuItem>
             </Menu>
           </View>

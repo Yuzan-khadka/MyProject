@@ -8,46 +8,7 @@ import {
   ScrollView
 } from "react-native";
 
-export default class Profile extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      firebaseData: [],
-      refreshing: false
-    };
-  }
-  componentDidMount() {
-    this.dataLoading();
-  }
-  dataLoading = () => {
-    this.setState({ refreshing: true });
-    let firebasekofinaldata = [];
-    fetch("https://gethired-b559f.firebaseio.com/UsersDetail.json")
-      .catch(err => {
-        Alert.alert("Something went wrong");
-        console.log(err);
-        this.setState({ refreshing: false });
-      })
-      .then(res => res.json())
-      .then(parsedRes => {
-        console.log("parsed", parsedRes);
-        let keys = Object.keys(parsedRes);
-        console.log("keys", keys);
-        keys.forEach(key => {
-          console.log("parsed", parsedRes[key]);
-
-          //firebasekofinaldata = [...firebasekofinaldata, parsedRes[key]]
-          firebasekofinaldata.push(parsedRes[key]);
-        });
-
-        console.log("final data", firebasekofinaldata);
-        this.setState({
-          firebaseData: firebasekofinaldata,
-          refreshing: false
-        });
-        console.log(this.state.firebaseData);
-      });
-  };
+export default class EProfile extends Component {
   render() {
     // let stars = [];
     // for (var i = 1; i <= 5; i++) {
@@ -68,13 +29,15 @@ export default class Profile extends Component {
           }}
         >
           <Image
-            source={require("../images/sanjay.jpg")}
+            source={require("../images/Ncell.png")}
             style={{
               flex: 1,
               width: null,
               height: null,
               borderRadius: 70,
-              resizeMode: "cover"
+              resizeMode: "cover",
+              borderColor: "green",
+              borderWidth: 2
             }}
           />
         </View>
@@ -87,7 +50,7 @@ export default class Profile extends Component {
               color: "#000"
             }}
           >
-            Yuzan Khadka
+            Ncell
           </Text>
         </View>
         <ScrollView
@@ -111,13 +74,14 @@ export default class Profile extends Component {
               }}
             >
               <Text style={{ fontWeight: "500", color: "black" }}>Email</Text>
-              <Text>yuzankhadka@gmail.com</Text>
+              <Text>Ncell@gmail.com</Text>
             </View>
             <View style={styles.profileInfo}>
               <Text style={{ fontWeight: "500", color: "black" }}>
                 Phone no.
               </Text>
               <Text>+97798XXXXXXXX</Text>
+              <Text>061XXXXXX</Text>
             </View>
             <View style={styles.profileInfo}>
               <Text style={{ fontWeight: "500", color: "black" }}>Address</Text>
@@ -129,9 +93,15 @@ export default class Profile extends Component {
             </View>
             <View style={styles.profileInfo}>
               <Text style={{ fontWeight: "500", color: "black" }}>
-                Jobs Completed
+                Registration No.
               </Text>
-              <Text>2</Text>
+              <Text>2019-8524-0034</Text>
+            </View>
+            <View style={styles.profileInfo}>
+              <Text style={{ fontWeight: "500", color: "black" }}>
+                Estd. Date
+              </Text>
+              <Text>June 1, 2010</Text>
             </View>
             <View style={styles.profileInfo}>
               <Text style={{ fontWeight: "500", color: "black" }}>
